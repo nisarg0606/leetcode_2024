@@ -1,14 +1,12 @@
 class Solution {
     public int[][] matrixReshape(int[][] mat, int r, int c) {
-        int noe = 0;
         List<Integer> arr = new ArrayList<>();
         for (int[] row : mat) {
             for (int element : row) {
                 arr.add(element);
-                noe += 1;
             }
         }
-        if(noe != (r * c)){
+        if(arr.size() != (r * c)){
             return mat;
         }
         int[][] result = new int[r][c];
