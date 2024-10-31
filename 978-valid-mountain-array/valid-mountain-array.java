@@ -9,10 +9,10 @@ class Solution {
                 maxIndex = i;
             }
         }
+        if (maxIndex == arr.length - 1 || maxIndex == 0) {
+            return false;
+        }
         for (int i = maxIndex; i > 0; i--) {
-            if (maxIndex == arr.length - 1 || maxIndex == 0) {
-                return false;
-            }
             if (arr[i] > arr[i - 1]) {
                 continue;
             } else {
@@ -21,9 +21,6 @@ class Solution {
         }
 
         for (int i = maxIndex; i < arr.length - 1; i++) {
-            if (maxIndex == arr.length - 1 || maxIndex == 0) {
-                return false;
-            }
             if (arr[i] > arr[i + 1]) {
                 continue;
             } else {
