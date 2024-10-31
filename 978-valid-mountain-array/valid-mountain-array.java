@@ -4,30 +4,16 @@ class Solution {
         if (n < 3) {
             return false;
         }
-        int maxIndex = 0;
-        for (int i = 1; i < n; i++) {
-            if (arr[i] > arr[maxIndex]) {
-                maxIndex = i;
-            }
+        int i = 0;
+        while (i < n - 1 && arr[i] < arr[i + 1]) {
+            i++;
         }
-        if (maxIndex == n - 1 || maxIndex == 0) {
+        if (i == 0 || i == n - 1) {
             return false;
         }
-        for (int i = maxIndex; i > 0; i--) {
-            if (arr[i] > arr[i - 1]) {
-                continue;
-            } else {
-                return false;
-            }
+        while (i < n - 1 && arr[i] > arr[i + 1]) {
+            i++;
         }
-
-        for (int i = maxIndex; i < arr.length - 1; i++) {
-            if (arr[i] > arr[i + 1]) {
-                continue;
-            } else {
-                return false;
-            }
-        }
-        return true;
+        return i == n - 1;
     }
 }
