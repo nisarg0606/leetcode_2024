@@ -1,27 +1,26 @@
 class Solution {
-
-    private boolean canAssign(List<Integer> num, int maxVal, int operations){
-        int count = 0;
-        for (int element : num) {
-            if(element > maxVal){
-                count += (int) Math.ceil((double) (element - maxVal) / maxVal);
-            }
+  public boolean ispossible(int nums[], int maxOperations, int k) {
+    for (int i = 0; i < nums.length; i++) {
+        if (nums[i] > k) {
+            maxOperations -= (nums[i] - 1) / k; // Calculate splits needed
         }
-        return count <= operations;
+        if (maxOperations < 0) {
+            return false; // Too many splits required
+        }
     }
+    return true;
+}
     public int minimumSize(int[] nums, int maxOperations) {
-        int low = 1;
-        int high = Arrays.stream(nums).max().orElse(0);
-        int result = Integer.MAX_VALUE;
-        while(low <= high){
-            int mid = low + (high - low) / 2;
-            if(canAssign(Arrays.stream(nums).boxed().collect(Collectors.toList()), mid, maxOperations)){
-                result = mid;
-                high = mid - 1;
-            }else{
-                low = mid + 1;
+        int l=1,r=(int)Math.pow(10,9);
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(ispossible(nums,maxOperations,mid)){
+                r=mid-1;
+            }
+            else{
+                l=mid+1;
             }
         }
-        return result;
+        return l;
     }
 }
