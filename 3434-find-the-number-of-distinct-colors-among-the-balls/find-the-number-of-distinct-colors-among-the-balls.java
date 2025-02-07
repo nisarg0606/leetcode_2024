@@ -5,16 +5,14 @@ class Solution {
         // int n = queries.length;
         int[] result = new int[queries.length];
         for (int i = 0; i < queries.length; i++) {
-            int ball = queries[i][0];
-            int color = queries[i][1];
-            if (ballMap.containsKey(ball)) {
-                int prevColor = ballMap.get(ball);
+            if (ballMap.containsKey(queries[i][0])) {
+                int prevColor = ballMap.get(queries[i][0]);
                 colorMap.put(prevColor, colorMap.get(prevColor) - 1);
                 if (colorMap.get(prevColor) == 0)
                     colorMap.remove(prevColor);
             }
-            ballMap.put(ball, color);
-            colorMap.put(color, colorMap.getOrDefault(color, 0) + 1);
+            ballMap.put(queries[i][0], queries[i][1]);
+            colorMap.put(queries[i][1], colorMap.getOrDefault(queries[i][1], 0) + 1);
             result[i] = colorMap.size();
         }
         return result;
