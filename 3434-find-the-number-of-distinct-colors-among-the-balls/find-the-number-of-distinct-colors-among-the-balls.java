@@ -2,9 +2,9 @@ class Solution {
     public int[] queryResults(int limit, int[][] queries) {
         HashMap<Integer, Integer> colorMap = new HashMap<>();
         HashMap<Integer, Integer> ballMap = new HashMap<>();
-        int n = queries.length;
-        int[] result = new int[n];
-        for (int i = 0; i < n; i++) {
+        // int n = queries.length;
+        int[] result = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
             int ball = queries[i][0];
             int color = queries[i][1];
             if (ballMap.containsKey(ball)) {
