@@ -1,30 +1,29 @@
-import java.util.Arrays;
+class Car {
+    int position;
+    double time;
+
+    Car(int p, double t) {
+        position = p;
+        time = t;
+    }
+}
 
 class Solution {
     public int carFleet(int target, int[] position, int[] speed) {
-        int n = position.length;
-        int[][] cars = new int[n][2];
-        for (int i = 0; i < n; i++) {
-            cars[i][0] = position[i];
-            cars[i][1] = speed[i];
+        int N = position.length;
+        Car[] cars = new Car[N];
+        for (int i = 0; i < N; ++i)
+            cars[i] = new Car(position[i], (double) (target - position[i]) / speed[i]);
+        Arrays.sort(cars, (a, b) -> Integer.compare(a.position, b.position));
+
+        int ans = 0, t = N;
+        while (--t > 0) {
+            if (cars[t].time < cars[t - 1].time)
+                ans++; //if cars[t] arrives sooner, it can't be caught
+            else
+                cars[t - 1] = cars[t]; //else, cars[t-1] arrives at same time as cars[t]
         }
 
-        Arrays.sort(cars, (a, b) -> b[0] - a[0]);
-
-        double[] time = new double[n];
-        for (int i = 0; i < n; i++) {
-            time[i] = (double) (target - cars[i][0]) / cars[i][1];
-        }
-        int fleet = 0;
-        double currentFleetTime = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (time[i] > currentFleetTime) {
-                fleet++;
-                currentFleetTime = time[i];
-            }
-        }
-
-        return fleet;
+        return ans + (t == 0 ? 1 : 0); //lone car is fleet (if it exists)
     }
 }
