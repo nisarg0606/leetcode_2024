@@ -1,35 +1,37 @@
 class Solution {
     public int evalRPN(String[] tokens) {
-        Stack<String> stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
+
         for (String token : tokens) {
-            if (!isOperator(token)) {
-                stack.push(token);
-            } else {
-                int x = Integer.parseInt(stack.pop());
-                int y = Integer.parseInt(stack.pop());
-                int result = performOperation(y, x, token);
-                stack.push(Integer.toString(result));
+            // Check if the token is an operator using just the first character
+            if (token.length() == 1) {
+                char c = token.charAt(0);
+                if (c == '+' || c == '-' || c == '*' || c == '/') {
+                    int b = stack.pop();
+                    int a = stack.pop();
+
+                    switch (c) {
+                        case '+':
+                            stack.push(a + b);
+                            break;
+                        case '-':
+                            stack.push(a - b);
+                            break;
+                        case '*':
+                            stack.push(a * b);
+                            break;
+                        case '/':
+                            stack.push(a / b);
+                            break;
+                    }
+                    continue;
+                }
             }
-        }
-        return Integer.parseInt(stack.pop());
-    }
 
-    public boolean isOperator(String token) {
-        return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
-    }
-
-    public int performOperation(int x, int y, String operator) {
-        switch (operator) {
-            case "+":
-                return x + y;
-            case "-":
-                return x - y;
-            case "*":
-                return x * y;
-            case "/":
-                return x / y;
-            default:
-                throw new IllegalArgumentException();
+            // If not an operator, parse and push the number
+            stack.push(Integer.parseInt(token));
         }
+
+        return stack.pop();
     }
 }
