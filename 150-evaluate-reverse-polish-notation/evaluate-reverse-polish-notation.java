@@ -1,31 +1,35 @@
 class Solution {
     public int evalRPN(String[] tokens) {
-        Stack<Integer> stack = new Stack<>();
-
+        Stack<String> stack = new Stack<>();
         for (String token : tokens) {
-            if (isOperator(token)) {
-                int a = stack.pop();
-                int b = stack.pop();
-                stack.push(applyOp(b, a, token));
+            if (!isOperator(token)) {
+                stack.push(token);
             } else {
-                stack.push(Integer.parseInt(token));
+                int x = Integer.parseInt(stack.pop());
+                int y = Integer.parseInt(stack.pop());
+                int result = performOperation(y, x, token);
+                stack.push(Integer.toString(result));
             }
         }
-
-        return stack.pop();
+        return Integer.parseInt(stack.pop());
     }
 
-    private boolean isOperator(String token) {
+    public boolean isOperator(String token) {
         return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
     }
 
-    private int applyOp(int a, int b, String op) {
-        switch (op) {
-            case "+": return a + b;
-            case "-": return a - b;
-            case "*": return a * b;
-            case "/": return a / b; // integer division
-            default: throw new IllegalArgumentException("Unknown operator: " + op);
+    public int performOperation(int x, int y, String operator) {
+        switch (operator) {
+            case "+":
+                return x + y;
+            case "-":
+                return x - y;
+            case "*":
+                return x * y;
+            case "/":
+                return x / y;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }
