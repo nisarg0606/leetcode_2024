@@ -34,41 +34,41 @@
     // }
 // }
 
-// class Solution {
-//     public int lengthOfLongestSubstring(String s) {
-//         Map<Character, Integer> map = new HashMap<>();
-//         int maxLen = 0;
-//         int left = 0;
-
-//         for (int right = 0; right < s.length(); right++) {
-//             char ch = s.charAt(right);
-
-//             if (map.containsKey(ch) && map.get(ch) >= left) {
-//                 left = map.get(ch) + 1; // move left just after the previous occurrence
-//             }
-
-//             map.put(ch, right); // update latest index of current char
-//             maxLen = Math.max(maxLen, right - left + 1); // update result
-//         }
-
-//         return maxLen;
-//     }
-// }
-
-
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int[] lastSeen = new int[128]; // stores last seen position + 1
+        Map<Character, Integer> map = new HashMap<>();
         int maxLen = 0;
         int left = 0;
 
         for (int right = 0; right < s.length(); right++) {
             char ch = s.charAt(right);
-            left = Math.max(left, lastSeen[ch]); // move left if needed
-            maxLen = Math.max(maxLen, right - left + 1);
-            lastSeen[ch] = right + 1; // store index + 1 to avoid default 0 confusion
+
+            if (map.containsKey(ch) && map.get(ch) >= left) {
+                left = map.get(ch) + 1; // move left just after the previous occurrence
+            }
+
+            map.put(ch, right); // update latest index of current char
+            maxLen = Math.max(maxLen, right - left + 1); // update result
         }
 
         return maxLen;
     }
 }
+
+
+// class Solution {
+//     public int lengthOfLongestSubstring(String s) {
+//         int[] lastSeen = new int[128]; // stores last seen position + 1
+//         int maxLen = 0;
+//         int left = 0;
+
+//         for (int right = 0; right < s.length(); right++) {
+//             char ch = s.charAt(right);
+//             left = Math.max(left, lastSeen[ch]); // move left if needed
+//             maxLen = Math.max(maxLen, right - left + 1);
+//             lastSeen[ch] = right + 1; // store index + 1 to avoid default 0 confusion
+//         }
+
+//         return maxLen;
+//     }
+// }
