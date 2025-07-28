@@ -17,7 +17,7 @@ class Solution {
 		}
 		
 		int maxFreq = Arrays.stream(freq).max().getAsInt();
-		if(maxFreq > (s.length() + 1 / 2)) return "";
+		if(maxFreq > (s.length() + 1) / 2) return "";
 		
 		PriorityQueue<Character> maxHeap = new PriorityQueue<>((a, b) -> freq[b - 'a'] - freq[a - 'a']);
 		
