@@ -1,43 +1,59 @@
-class Pair {
-    int freq;
+class CharacterFrequency {
     char ch;
+    int freq;
 
-    Pair(int freq, char ch) {
-        this.freq = freq;
+    CharacterFrequency(char ch, int freq) {
         this.ch = ch;
+        this.freq = freq;
     }
 }
 
 class Solution {
-    public String reorganizeString(String s) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
-        }
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.freq - b.freq);
-        Pair pr;
-        for (char ch : map.keySet()) {
-            pr = new Pair(-map.get(ch), ch);
-            pq.add(pr);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        Pair prev = null;
-
-        while (!pq.isEmpty()) {
-            Pair current = pq.poll();
-            sb.append(current.ch);
-            current.freq += 1;
-            if (prev != null && prev.freq < 0) {
-                pq.add(prev);
-            }
-            prev = (current.freq < 0) ? current : null;
-        }
-
-        if (sb.length() != s.length()) {
-            return "";
-        } else {
-            return sb.toString();
-        }
-    }
+    public String reorganizeString(String s){
+		int[] freq = new int[26];
+		
+		for(char ch: s.toCharArray()){
+			freq[ch - 'a']++;
+		}
+		
+		int maxFreq = Arrays.stream(freq).max().getAsInt();
+		if(maxFreq > (s.length() + 1 / 2)) return "";
+		
+		PriorityQueue<Character> maxHeap = new PriorityQueue<>((a, b) -> freq[b - 'a'] - freq[a - 'a']);
+		
+		for(char ch = 'a'; ch <= 'z'; ch++){
+			if(freq[ch - 'a'] > 0){
+				maxHeap.add(ch);
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		
+		while(maxHeap.size() >= 2){
+			char first = maxHeap.poll();
+			char second = maxHeap.poll();
+			
+			sb.append(first);
+			sb.append(second);
+			
+			freq[first - 'a']--;
+			freq[second - 'a']--;
+			
+			if(freq[first - 'a'] > 0){
+				maxHeap.add(first);
+			}
+			
+			if(freq[second - 'a'] > 0){
+				maxHeap.add(second);
+			}
+		}
+		
+		if(!maxHeap.isEmpty()){
+			char last = maxHeap.poll();
+			if(freq[last - 'a'] > 1) return "";
+			sb.append(last);
+		}
+		
+		return sb.toString();
+	}
 }
